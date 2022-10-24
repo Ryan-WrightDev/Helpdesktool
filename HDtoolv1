@@ -1,0 +1,76 @@
+@ECHO COLOR 01
+Echo Off
+CLS
+REM :menu is an Anchor.  Putting the : in front of menu makes is an Anchor. 
+:Menu
+REM Putting a period directly after an Echo Statement will cause for that line to be skipped.  
+ECHO.
+Echo .....................................................................
+ECHO PRESS 1, 2, 3, OR 4 TO SELECT YOUR TASK OR PRESS 5 TO EXIT
+Echo .....................................................................
+ECHO.
+ECHO 1 - OPEN APP_PULL
+ECHO 2 - OPEN CHANGE_COMPUTER_NAME
+ECHO 3 - OPEN GET_SERIAL_NUMBER 
+ECHO 4 - OPEN Data_transfer
+ECHO.
+
+SET /P M=Type 1, 2, 3, 4, or 5 then press Enter:
+IF %M%==1 GOTO APP_PULL
+IF %M%==2 GOTO CHANGE_COMPUTER_NAME
+IF %M%==3 GOTO GET_SERIAL_NUMBER
+IF %M%==4 GOTO Data_transfer
+
+:APP_PULL
+@echo off
+color 01
+set /p IP="what is your computer name?"
+set /p Name=" What is the name of the enduser no spaces?:
+wmic /output:C:\testfolder\%Name%.txt /node:%IP% product get name, version, vendor
+
+:CHANGE_COMPUTER_NAME
+Echo This option is not yet available
+Echo.
+Echo would you like to go back to the main menu. Yes(y) or no(n)
+Set /P answer=Type y for yes or n for no then press enter, must be lowercase:
+IF %answer%==y GOTO Menu
+IF %answer%==n or n exit
+
+:GET_SERIAL_NUMBER
+Echo.
+Set /P computername= Please enter the Asset tag:
+wmic/node:"%Computername%" bios get serialnumber
+Echo would you like to go back to the main menu. Yes(y) or no(n)
+Set /P answer=Type y for yes or n for no then press enter, must be lowercase:
+IF %answer%==y GOTO Menu
+IF %answer%==n or n exit
+
+:Data_transfer
+cls
+Echo This portion of the program will copy and move files to your One Drive
+TIMEOUT /T 5
+Echo.
+set /P info=Please enter the users logon ID:
+CD C:\Users\%Info%\OneDrive - 
+Mkdir PC_copy
+CD "C:\Users\%Info%\OneDrive - \PC_copy"
+mkdir Document_copy
+mkdir desktop_copy
+mkdir pictures_copy
+mkdir Idrive_copy
+mkdir Downloads_copy
+mkdir Pictures_copy
+CD C:\Users\%Info%\desktop
+xcopy C:\Users\%info%\Desktop\IT_stuff "C:\Users\%Info%\OneDrive - \PC_copy\desktop_copy" /O /X /E /H /K
+CD C:\Users\%Info%\OneDrive - Pace Bus
+CD C:\Users\%Info%\documents
+xcopy C:\Users\%info%\Documents "C:\Users\%Info%\OneDrive - \PC_copy\Document_copy" /O /X /E /H /K
+CD C:\Users\%Info%\Downloads
+xcopy C:\Users\%info%\Downloads "C:\Users\%Info%\OneDrive - \PC_copy\Downloads_copy" /O /X /E /H /K
+CD C:\Users\%Info%\pictures
+xcopy C:\Users\%info%\pictures "C:\Users\%Info%\OneDrive - \PC_copy\Pictures_copy" /O /X /E /H /K
+Dir
+pause 
+
+
+
